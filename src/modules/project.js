@@ -10,11 +10,11 @@ export default class Project {
         const taskExists = this.#todoList.some(item => item.title === task.title);
         if (taskExists) {
             console.log("Task with the same title already exists.");
-            return -1;
+            return 0;
         }
         this.#todoList.push(task);
         console.log("Task added successfully");
-        return 0;
+        return 1;
     }
 
     removeTask(task) {
