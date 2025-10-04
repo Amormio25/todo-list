@@ -1,7 +1,27 @@
-// TEST WORKS
-// import Task from "./modules/task";
-// import Project from "./modules/project";
+import Task from "./modules/task";
+import Project from "./modules/project";
+import ProjectList from "./modules/projectList";
 
+/************** MAY HAVE TO UPDATE MODULE PARAMETERS LATER ON ***************/
+// for example, when interacting with DOM to delete project, will clicking its
+// div return its title and then parse the list for the title?
+// Or should it return its index and simply remove the index from projectList?
+
+
+//************* ProjectList test /*************/
+// const list = new ProjectList();
+// console.log(list.getProjectList());
+
+// list.addProject("New project");
+// console.log(list.getProjectList());
+
+// console.log(list.getProject("New project"));
+// list.removeProject(list.getProject("New project"));
+// console.log(list.getProjectList());
+
+
+
+/************* Project and Task test /**************/
 // const proj = new Project("Project");
 // const item = new Task("testT", "testDesc", "testDue", "testP", "testC");
 // const item2 = new Task("testT", "testDesc", "testDue", "testP", "testC");
