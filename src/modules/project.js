@@ -3,6 +3,9 @@ export default class Project {
     #todoList = [];
 
     constructor(title) {
+        if (!new.target) {
+            throw Error("Use the new operator to create a new object.");
+        };
         this.#title = title;
     }
 
