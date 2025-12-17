@@ -1,6 +1,8 @@
 import Task from "./modules/task";
 import Project from "./modules/project";
 import ProjectList from "./modules/projectList";
+import "./assets/css/reset.css";
+import "./assets/css/style.css";
 
 /************** MAY HAVE TO UPDATE MODULE PARAMETERS LATER ON ***************/
 // for example, when interacting with DOM to delete project, will clicking its
