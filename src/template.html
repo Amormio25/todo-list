@@ -84,28 +84,26 @@
       </section>
     </nav>
 
-    <div id="content">
-      <div class="container">
-        <!-- HEADING -->
-        <div class="heading">
-          <div class="title">Today</div>
-          <div class="numTasks">
+    <main class="main-content">
+      <section class="view">
+        <header class="view-header">
+          <h1 class="view-title">Today</h1>
+          <div class="view-meta">
             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
               <path
                 d="M12 2C6.5 2 2 6.5 2 12S6.5 22 12 22 22 17.5 22 12 17.5 2 12 2M12 20C7.59 20 4 16.41 4 12S7.59 4 12 4 20 7.59 20 12 16.41 20 12 20M16.59 7.58L10 14.17L7.41 11.59L6 13L10 17L18 9L16.59 7.58Z"
               />
             </svg>
-            <span>5 tasks</span>
+            <span class="view-meta-tasks">5 tasks</span>
           </div>
-        </div>
+        </header>
 
-        <!-- TASKS -->
-        <div class="tasks-container">
+        <section class="tasks-container">
           <div class="task-item">
             <button class="task-checkbox"></button>
             <div class="task-item-right">
-              <div class="task-content">
-                <div class="task-title">Lorem Ipsum</div>
+              <div class="task-text">
+                <h1 class="task-title">Lorem Ipsum</h1>
                 <div class="task-description">
                   I need to write some random stuff to test
                 </div>
@@ -128,8 +126,8 @@
           <div class="task-item">
             <button class="task-checkbox"></button>
             <div class="task-item-right">
-              <div class="task-content">
-                <div class="task-title">Lorem Ipsum</div>
+              <div class="task-text">
+                <h1 class="task-title">Lorem Ipsum</h1>
                 <div class="task-description">
                   I need to write some random stuff to test
                 </div>
@@ -149,24 +147,29 @@
               </div>
             </div>
           </div>
-        </div>
+        </section>
 
         <!-- DIALOG POP UP -->
-        <dialog data-modal open="">
+        <dialog data-modal open>
           <form action="" method="post">
-            <div class="form-container">
-              <input id="title" type="text" placeholder="Test Title" required />
+            <section class="form-container">
               <input
-                id="description"
+                id="form-title"
+                type="text"
+                placeholder="Test Title"
+                required
+              />
+              <input
+                id="form-description"
                 type="text"
                 placeholder="Test Description"
                 required
               />
-              <div class="details">
+              <div class="form-details">
                 <input type="date" name="date" id="date" />
                 <div class="dropdown">
-                  <div id="dropdown-select">Select priority</div>
-                  <ul id="dropdown-list">
+                  <div class="dropdown-select">Select priority</div>
+                  <ul class="dropdown-list">
                     <li class="dropdown-option">High</li>
                     <li class="dropdown-option">Medium</li>
                     <li class="dropdown-option">Low</li>
@@ -177,10 +180,10 @@
                 <button class="cancel">Cancel</button>
                 <button class="add">Add</button>
               </div>
-            </div>
+            </section>
           </form>
         </dialog>
-      </div>
-    </div>
+      </section>
+    </main>
   </body>
 </html>
