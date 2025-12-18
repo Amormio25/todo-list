@@ -82,6 +82,7 @@
     </nav>
     <div id="content">
       <div class="container">
+        <!-- HEADING -->
         <div class="heading">
           <div class="title">Today</div>
           <div class="numTasks">
@@ -93,6 +94,8 @@
             <span>5 tasks</span>
           </div>
         </div>
+
+        <!-- TASKS -->
         <div class="tasks-container">
           <div class="task-item">
             <button class="task-checkbox"></button>
@@ -143,6 +146,33 @@
             </div>
           </div>
         </div>
+
+        <!-- DIALOG POP UP -->
+        <dialog data-modal open="">
+          <form action="" method="post">
+            <div class="form-container">
+              <input id="title" type="text" placeholder="Test Title" required />
+              <input
+                id="description"
+                type="text"
+                placeholder="Test Description"
+                required
+              />
+              <div class="details">
+                <input type="date" name="date" id="date" />
+                <select name="priority" id="priority">
+                  <option value="high">High</option>
+                  <option value="medium">Medium</option>
+                  <option value="low">Low</option>
+                </select>
+              </div>
+              <div class="buttons">
+                <button class="cancel">Cancel</button>
+                <button class="add">Add</button>
+              </div>
+            </div>
+          </form>
+        </dialog>
       </div>
     </div>
   </body>
