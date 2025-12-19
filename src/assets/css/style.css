@@ -118,6 +118,7 @@ header {
   display: flex;
   gap: 0.5rem;
   align-items: center;
+  padding-top: 0.5rem;
   margin: 0;
   font-size: 1rem;
 }
@@ -244,8 +245,8 @@ dialog::backdrop {
   display: flex;
   justify-content: center;
   align-items: center;
-  width: 90px;
-  padding: 0.25rem;
+  width: 115px;
+  padding: 0.25rem 0.5rem;
   border: 1px solid #acacac;
   border-radius: 4px;
   font-size: 0.75rem;
@@ -272,8 +273,8 @@ dialog::backdrop {
 }
 
 .dropdown-option {
-  width: 90px;
-  padding: 0.25rem;
+  width: 115px;
+  padding: 0.25rem 0.5rem;
   text-align: center;
 }
 
