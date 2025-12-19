@@ -7,6 +7,14 @@
     Oxygen, Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
 }
 
+:root {
+  --brand-header-color: #307e7e;
+  --dark-grey: #242729;
+  --grey: #393e41;
+  --light-grey: #acacac;
+  --main-grey-hover: #474d50;
+}
+
 svg {
   width: 1.25rem;
   height: 1.25rem;
@@ -20,7 +28,7 @@ body {
   overflow: hidden;
 
   height: 100vh;
-  background-color: #393e41;
+  background-color: var(--grey);
 }
 
 header {
@@ -28,7 +36,7 @@ header {
   display: flex;
   align-items: center;
 
-  background-color: #307e7e;
+  background-color: var(--brand-header-color);
   padding-left: 1.5rem;
   font-size: 1.5rem;
   font-weight: 600;
@@ -41,7 +49,7 @@ header {
   flex-direction: column;
   gap: 5rem;
 
-  background-color: #242729;
+  background-color: var(--dark-grey);
   padding: 1rem;
 }
 
@@ -55,7 +63,7 @@ header {
 }
 
 .sidebar-item:hover {
-  background-color: #474d50;
+  background-color: var(--main-grey-hover);
   border-radius: 4px;
   cursor: pointer;
 }
@@ -85,7 +93,7 @@ header {
 }
 
 .sidebar-link--bar svg:hover {
-  background-color: rgba(107, 114, 119, 1);
+  background-color: var(--light-grey);
 }
 
 .main-content {
@@ -124,14 +132,14 @@ header {
 }
 
 .view-meta svg {
-  fill: #acacac;
+  fill: var(--light-grey);
 }
 
 .view-meta-tasks {
   margin: 0;
   line-height: 1;
 
-  color: #acacac;
+  color: var(--light-grey);
   font-weight: 500;
 }
 
@@ -144,12 +152,12 @@ header {
   align-items: center;
   width: 80%;
   padding: 0.5rem;
-  border-bottom: 1px solid #acacac;
+  border-bottom: 1px solid var(--light-grey);
   cursor: pointer;
 }
 
 .task-item:hover {
-  background-color: #474d50;
+  background-color: var(--main-grey-hover);
   transition: 0.3s ease;
 }
 
@@ -175,7 +183,7 @@ header {
 }
 
 .task-description {
-  color: #acacac;
+  color: var(--light-grey);
   font-size: 0.8rem;
 }
 
@@ -186,13 +194,19 @@ header {
 }
 
 dialog {
-  position: absolute;
-  background-color: #242729;
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 100%;
+  max-width: 500px;
+  background-color: var(--dark-grey);
   padding: 1rem;
-  margin: auto;
+  margin: 0;
   border: none;
   border-radius: 6px;
   box-shadow: rgba(0, 0, 0, 0.25) 0px 25px 50px -12px;
+  z-index: 1;
 }
 
 dialog::backdrop {
@@ -207,7 +221,7 @@ dialog::backdrop {
 }
 
 .form-container input {
-  background-color: #242729;
+  background-color: var(--dark-grey);
   padding: 0.25rem;
   border: none;
   outline: none;
@@ -247,7 +261,7 @@ dialog::backdrop {
   align-items: center;
   width: 115px;
   padding: 0.25rem 0.5rem;
-  border: 1px solid #acacac;
+  border: 1px solid var(--light-grey);
   border-radius: 4px;
   font-size: 0.75rem;
 }
@@ -257,6 +271,7 @@ dialog::backdrop {
   top: 110%;
   left: 0;
   right: 0;
+  visibility: hidden;
   opacity: 0;
 
   display: flex;
@@ -264,11 +279,10 @@ dialog::backdrop {
   justify-content: center;
   align-items: center;
 
-  background-color: #242729;
-  border: 1px solid #4d4a4a;
+  background-color: var(--dark-grey);
+  border: 1px solid var(--grey);
   border-radius: 4px;
   font-size: 0.75rem;
-  visibility: hidden;
   transform: opacity 0.2s linear, visibility 0.2s linear;
 }
 
@@ -279,7 +293,7 @@ dialog::backdrop {
 }
 
 .dropdown-option:hover {
-  background-color: #474d50;
+  background-color: var(--main-grey-hover);
 }
 
 .dropdown-option:first-child:hover {
@@ -308,7 +322,7 @@ dialog::backdrop {
 }
 
 .add {
-  background-color: #307e7e;
+  background-color: var(--brand-header-color);
   padding: 0.5rem 0.75rem;
   border: none;
   border-radius: 4px;
@@ -316,4 +330,104 @@ dialog::backdrop {
   color: white;
   font-weight: 600;
   cursor: pointer;
+}
+
+.select-date {
+  position: relative;
+}
+
+.select-date:hover ~ .calendar {
+  visibility: visible;
+  opacity: 1;
+}
+
+.calendar {
+  position: absolute;
+  top: 72%;
+  left: 0;
+  right: 0;
+  visibility: hidden;
+  opacity: 0;
+  display: flex;
+  flex-direction: column;
+  width: 380px;
+  height: auto;
+  padding: 0.5rem;
+  background-color: var(--dark-grey);
+  border: 1px solid var(--grey);
+  border-radius: 12px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+}
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.5rem;
+}
+
+.monthYear {
+  width: 150px;
+  text-align: center;
+  font-weight: 600;
+}
+
+.header button {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 40px;
+  height: 40px;
+  box-shadow: 0 0 4px rgba(0, 0, 0, 0.2);
+  border: 1px solid var(--grey);
+  border-radius: 50%;
+  background-color: var(--dark-grey);
+  cursor: pointer;
+}
+
+.days {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+}
+
+.day {
+  text-align: center;
+  padding: 0.25rem;
+  color: var(--light-grey);
+  font: 600;
+}
+
+.dates {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 0.25rem;
+}
+
+.date {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 40px;
+  height: 40px;
+  padding: 0.5rem;
+  border-radius: 50%;
+  margin: auto;
+  text-align: center;
+  font-weight: 600;
+  cursor: pointer;
+  transition: 0.2s;
+}
+
+.date:hover,
+.date.active {
+  background-color: var(--brand-header-color);
+  color: white;
+}
+
+.date.inactive {
+  color: #d2d2d2;
+}
+
+.date.inactive:hover {
+  color: #fff;
 }

@@ -1,6 +1,7 @@
 import Task from "./modules/task";
 import Project from "./modules/project";
 import ProjectList from "./modules/projectList";
+import { updateCalendar } from "./modules/calendar";
 import "./assets/css/reset.css";
 import "./assets/css/style.css";
 
@@ -45,3 +46,4 @@ import "./assets/css/style.css";
 //      these popups should take a form and use the ctors to create the objects
 // for editing, have the same popup but since we're not creating a new object
 //      find a way to use the getters and setters to do the work
+updateCalendar();
