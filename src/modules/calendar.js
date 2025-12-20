@@ -52,14 +52,14 @@ export const updateCalendar = () => {
   datesElement.innerHTML = datesHTML;
 };
 
-prevBtn.addEventListener("click", () => {
-  currentDate.setMonth(currentDate.getMonth() - 1);
-  updateCalendar();
-});
+// prevBtn.addEventListener("click", () => {
+//   currentDate.setMonth(currentDate.getMonth() - 1);
+//   updateCalendar();
+// });
 
-nextBtn.addEventListener("click", () => {
-  currentDate.setMonth(currentDate.getMonth() + 1);
-  updateCalendar();
-});
+// nextBtn.addEventListener("click", () => {
+//   currentDate.setMonth(currentDate.getMonth() + 1);
+//   updateCalendar();
+// });
 
-updateCalendar();
+// updateCalendar();
