@@ -12,6 +12,8 @@ export const updateCalendar = () => {
   const currentMonth = currentDate.getMonth();
 
   const firstDay = new Date(currentYear, currentMonth, 1);
+
+  // go to next month, day = 0 means last day of prev month
   const lastDay = new Date(currentYear, currentMonth + 1, 0);
   const totalDays = lastDay.getDate();
   const firstDayIndex = firstDay.getDay();
@@ -25,6 +27,8 @@ export const updateCalendar = () => {
 
   let datesHTML = "";
 
+  // get the dates from the previous month that carry over
+  // goes from the furthest date up until day = 0 (last day of prev month)
   for (let i = firstDayIndex; i > 0; i--) {
     const prevDate = new Date(currentYear, currentMonth, -i + 1);
     datesHTML += `<div class="date inactive">${prevDate.getDate()}</div>`;
@@ -32,11 +36,14 @@ export const updateCalendar = () => {
 
   for (let i = 1; i <= totalDays; i++) {
     const date = new Date(currentYear, currentMonth, i);
+
+    // highlight current date by default
     const activeClass =
       date.toDateString() === new Date().toDateString() ? "active" : "";
     datesHTML += `<div class="date ${activeClass}">${i}</div>`;
   }
 
+  // get the dates from the next month that carry over
   for (let i = 1; i < 7 - lastDayIndex; i++) {
     const nextDate = new Date(currentYear, currentMonth + 1, i);
     datesHTML += `<div class="date inactive">${nextDate.getDate()}</div>`;
