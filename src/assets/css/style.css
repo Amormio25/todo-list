@@ -23,34 +23,39 @@ svg {
 
 body {
   display: grid;
-  grid-template-columns: 270px 4fr;
-  grid-template-rows: 0.1fr 0.3fr 1fr;
-  overflow: hidden;
-
+  grid-template-columns: 270px 1fr;
+  grid-template-rows: auto 1fr;
+  width: 100vw;
   height: 100vh;
   background-color: var(--grey);
+  transition: grid-template-columns 0.5s ease;
 }
 
-header {
+#header {
   grid-column: 1 / -1;
+  grid-row: 1;
   display: flex;
   align-items: center;
-
   background-color: var(--brand-header-color);
-  padding-left: 1.5rem;
+  padding: 1rem 2rem;
   font-size: 1.5rem;
   font-weight: 600;
 }
 
+.header-inner {
+  width: 100%;
+}
+
 .sidebar {
-  grid-column: 1;
-  grid-row: 2 / -1;
+  grid-row: 2;
+  background-color: var(--dark-grey);
   display: flex;
   flex-direction: column;
   gap: 5rem;
-
-  background-color: var(--dark-grey);
   padding: 1rem;
+  min-width: 0;
+  overflow: hidden;
+  transition: transform 0.5s ease;
 }
 
 .sidebar-list {
@@ -72,12 +77,15 @@ header {
   display: flex;
   align-items: center;
   gap: 0.5rem;
-  font-size: 1rem;
 }
 
 .sidebar-link--bar {
   display: flex;
   justify-content: space-between;
+}
+
+.sidebar-link--bar span {
+  white-space: nowrap;
 }
 
 .sidebar-link--bar svg {
@@ -96,20 +104,29 @@ header {
   background-color: var(--light-grey);
 }
 
+@media (max-width: 768px) {
+  body {
+    grid-template-columns: 0 1fr;
+  }
+
+  .sidebar {
+    transform: translateX(-100%);
+  }
+}
+
 .main-content {
-  grid-column: 2;
-  grid-row: 2 / 4;
+  grid-row: 2;
   display: flex;
   justify-content: center;
   padding-top: 3rem;
 }
 
+/* .main-content centers, so to prevent view from shrinking before space around
+  collapses, set width 100% and make a max width. This protects the content until
+  all the surrounding space is 0 */
 .view {
   width: 100%;
   height: 100%;
-  /* .main-content centers, so to prevent view from shrinking before space around
-  collapses, set width 100% and make a max width. This protects the content until
-  all the surrounding space is 0 */
   max-width: 900px;
   padding: 3rem;
 }
@@ -210,6 +227,12 @@ header {
   justify-content: space-between;
   align-items: center;
   gap: 1rem;
+}
+
+@media (max-width: 425px) {
+  .task-details {
+    display: none;
+  }
 }
 
 dialog {
