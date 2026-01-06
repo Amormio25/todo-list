@@ -47,3 +47,13 @@ import "./modules/calendarDOM";
 //      these popups should take a form and use the ctors to create the objects
 // for editing, have the same popup but since we're not creating a new object
 //      find a way to use the getters and setters to do the work
+
+// todo
+// create add task button
+// create different pages for the sidebar links
+//      first update the heading
+//      then by using filter, find # of tasks and display
+//      for tasks not due today, display from closest to farthest due
+// then handle adding new tasks and displaying after adding
+//      take into account how it would need to update all displays for each
+//      sidebar option
