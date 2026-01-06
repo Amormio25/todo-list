@@ -4,7 +4,7 @@ import ProjectList from "./modules/projectList";
 import { updateCalendar } from "./modules/calendar";
 import "./assets/css/reset.css";
 import "./assets/css/style.css";
-import { appendCalendarTo } from "./modules/calendarDOM";
+import "./modules/calendarDOM";
 
 /************** MAY HAVE TO UPDATE MODULE PARAMETERS LATER ON ***************/
 // for example, when interacting with DOM to delete project, will clicking its
@@ -47,6 +47,3 @@ import { appendCalendarTo } from "./modules/calendarDOM";
 //      these popups should take a form and use the ctors to create the objects
 // for editing, have the same popup but since we're not creating a new object
 //      find a way to use the getters and setters to do the work
-
-const formDetailsContainer = document.querySelector(".form-details");
-appendCalendarTo(formDetailsContainer);

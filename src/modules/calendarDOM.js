@@ -1,47 +1,10 @@
 import { getCalendarDates } from "./calendar";
 
-const createElementWithClass = (tag, className) => {
-  const element = document.createElement(tag);
-  if (className) element.className = className;
-  return element;
-};
-
-const calendarContainer = createElementWithClass("div", "calendar");
-const header = createElementWithClass("div", "header");
-
-const prevBtn = createElementWithClass("button", null);
-prevBtn.id = "prevBtn";
-const prevIcon = document.createElement("i");
-prevIcon.className = "fa fa-chevron-left";
-prevBtn.appendChild(prevIcon);
-
-const monthYearElement = createElementWithClass("div", "monthYear");
-monthYearElement.id = "monthYear";
-
-const nextBtn = createElementWithClass("button", null);
-nextBtn.id = "nextBtn";
-const nextIcon = document.createElement("i");
-nextIcon.className = "fa fa-chevron-right";
-nextBtn.appendChild(nextIcon);
-
-header.appendChild(prevBtn);
-header.appendChild(monthYearElement);
-header.appendChild(nextBtn);
-
-const daysElement = createElementWithClass("div", "days");
-const daysOfWeek = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
-daysOfWeek.forEach((day) => {
-  const dayElement = createElementWithClass("div", "day");
-  dayElement.textContent = day;
-  daysElement.appendChild(dayElement);
-});
-
-const datesElement = createElementWithClass("div", "dates");
-datesElement.id = "dates";
-
-calendarContainer.appendChild(header);
-calendarContainer.appendChild(daysElement);
-calendarContainer.appendChild(datesElement);
+const calendarContainer = document.querySelector(".calendar");
+const monthYearElement = document.querySelector("#monthYear");
+const prevBtn = document.querySelector("#prevBtn");
+const nextBtn = document.querySelector("#nextBtn");
+const datesElement = document.querySelector("#dates");
 
 export const renderCalendar = (year, month) => {
   // Clear previous dates
@@ -67,7 +30,8 @@ export const renderCalendar = (year, month) => {
 
   const dates = getCalendarDates(year, month);
   dates.forEach(({ date, isCurrentMonth }) => {
-    const dateElement = createElementWithClass("div", "date");
+    const dateElement = document.createElement("div");
+    dateElement.classList.add("date");
     if (!isCurrentMonth) dateElement.classList.add("inactive");
     if (date.toDateString() === new Date().toDateString()) {
       dateElement.classList.add("active");
@@ -96,7 +60,3 @@ nextBtn.addEventListener("click", () => {
 
 const currentDate = new Date();
 renderCalendar(currentDate.getFullYear(), currentDate.getMonth());
-
-export const appendCalendarTo = (container) => {
-  container.appendChild(calendarContainer);
-};
