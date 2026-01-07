@@ -1,0 +1,20 @@
+import { taskManager } from "../taskManager";
+import taskElement from "../taskElement";
+
+function loadUpcomingTasks() {
+  const heading = document.querySelector(".view-title");
+  heading.textContent = "Upcoming";
+
+  const numTasks = document.querySelector(".view-num-tasks");
+  numTasks.textContent = taskManager.getUpcomingTasks().length();
+
+  const tasksContainer = document.querySelector(".tasks-container");
+  tasksContainer.innerHTML = "";
+
+  const tasks = taskManager.getUpcomingTasks();
+  tasks.forEach((task) => {
+    taskObj = taskElement(task);
+    tasksContainer.appendChild(taskObj);
+  });
+}
+export { loadUpcomingTasks };

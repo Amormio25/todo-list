@@ -14,6 +14,7 @@ function loadAllTasks() {
   const tasks = taskManager.getAllTasks();
   tasks.forEach((task) => {
     taskObj = taskElement(task);
+    tasksContainer.appendChild(taskObj);
   });
 }
 export { loadAllTasks };
