@@ -1,6 +1,6 @@
 import Project from "./project";
 
-export default class ProjectList {
+class ProjectList {
   #projectList = [];
 
   constructor() {
@@ -28,3 +28,6 @@ export default class ProjectList {
     );
   }
 }
+
+const projectList = new ProjectList();
+export default projectList;

@@ -1,6 +1,5 @@
 import { getCalendarDates } from "./calendar";
 
-const calendarContainer = document.querySelector(".calendar");
 const monthYearElement = document.querySelector("#monthYear");
 const prevBtn = document.querySelector("#prevBtn");
 const nextBtn = document.querySelector("#nextBtn");
