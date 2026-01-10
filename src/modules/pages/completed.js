@@ -6,14 +6,14 @@ function loadCompletedTasks() {
   heading.textContent = "Completed";
 
   const numTasks = document.querySelector(".view-num-tasks");
-  numTasks.textContent = taskManager.getCompletedTasks().length();
+  numTasks.textContent = taskManager.getCompletedTasks().length;
 
   const tasksContainer = document.querySelector(".tasks-container");
   tasksContainer.innerHTML = "";
 
   const tasks = taskManager.getCompletedTasks();
   tasks.forEach((task) => {
-    taskObj = taskElement(task);
+    const taskObj = taskElement(task);
     tasksContainer.appendChild(taskObj);
   });
 }

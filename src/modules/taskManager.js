@@ -11,22 +11,22 @@ const taskManager = {
     return tasks;
   },
   getTodayTasks: () => {
-    const tasks = getAllTasks();
+    const tasks = taskManager.getAllTasks();
     return tasks.filter((task) => isToday(task.getDueDate()));
   },
 
   getUpcomingTasks: () => {
-    const tasks = getAllTasks();
+    const tasks = taskManager.getAllTasks();
     return tasks.filter((task) => isThisWeek(task.getDueDate()));
   },
 
   getImportantTasks: () => {
-    const tasks = getAllTasks();
+    const tasks = taskManager.getAllTasks();
     return tasks.filter((task) => task.getPriority() === "High");
   },
 
   getCompletedTasks: () => {
-    const tasks = getAllTasks();
+    const tasks = taskManager.getAllTasks();
     return tasks.filter((task) => task.getCompletedStatus() === true);
   },
 };

@@ -1,3 +1,4 @@
+import Task from "./task";
 export default class Project {
   #title;
   #todoList = [];
@@ -9,12 +10,17 @@ export default class Project {
     this.#title = title;
   }
 
+  // addTask(task) {
+  //   const taskExists = this.#todoList.some((item) => item.title === task.title);
+  //   if (taskExists) {
+  //     console.log("Task with the same title already exists.");
+  //     return 0;
+  //   }
+  //   this.#todoList.push(task);
+  //   console.log("Task added successfully");
+  //   return 1;
+  // }
   addTask(task) {
-    const taskExists = this.#todoList.some((item) => item.title === task.title);
-    if (taskExists) {
-      console.log("Task with the same title already exists.");
-      return 0;
-    }
     this.#todoList.push(task);
     console.log("Task added successfully");
     return 1;

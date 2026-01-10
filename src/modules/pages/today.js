@@ -6,14 +6,14 @@ function loadTodayTasks() {
   heading.textContent = "Today";
 
   const numTasks = document.querySelector(".view-num-tasks");
-  numTasks.textContent = taskManager.getTodayTasks().length();
+  numTasks.textContent = taskManager.getTodayTasks().length;
 
   const tasksContainer = document.querySelector(".tasks-container");
   tasksContainer.innerHTML = "";
 
   const tasks = taskManager.getTodayTasks();
   tasks.forEach((task) => {
-    taskObj = taskElement(task);
+    const taskObj = taskElement(task);
     tasksContainer.appendChild(taskObj);
   });
 }

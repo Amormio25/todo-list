@@ -6,14 +6,15 @@ function loadUpcomingTasks() {
   heading.textContent = "Upcoming";
 
   const numTasks = document.querySelector(".view-num-tasks");
-  numTasks.textContent = taskManager.getUpcomingTasks().length();
+  numTasks.textContent = taskManager.getUpcomingTasks().length;
 
   const tasksContainer = document.querySelector(".tasks-container");
   tasksContainer.innerHTML = "";
 
   const tasks = taskManager.getUpcomingTasks();
   tasks.forEach((task) => {
-    taskObj = taskElement(task);
+    console.log("here");
+    const taskObj = taskElement(task);
     tasksContainer.appendChild(taskObj);
   });
 }

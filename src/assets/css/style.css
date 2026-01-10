@@ -10,6 +10,7 @@
 :root {
   --primary: hsla(180, 45%, 34%, 0.9);
   --primary-hover: hsla(180, 45%, 34%, 1);
+  --primary-light: hsla(180, 60%, 70%, 0.3);
   /* --dark-grey: hsl(230 5% 13%);
   --grey: hsl(203 7% 25%);
   --light-grey: hsl(0 0% 67%);
@@ -90,6 +91,12 @@ body {
 
 .sidebar-item:hover {
   background-color: var(--border-muted);
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.sidebar-item.active {
+  background-color: var(--primary-light);
   border-radius: 4px;
   cursor: pointer;
 }

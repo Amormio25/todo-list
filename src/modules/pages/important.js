@@ -6,14 +6,14 @@ function loadImportantTasks() {
   heading.textContent = "Important";
 
   const numTasks = document.querySelector(".view-num-tasks");
-  numTasks.textContent = taskManager.getImportantTasks().length();
+  numTasks.textContent = taskManager.getImportantTasks().length;
 
   const tasksContainer = document.querySelector(".tasks-container");
   tasksContainer.innerHTML = "";
 
   const tasks = taskManager.getImportantTasks();
   tasks.forEach((task) => {
-    taskObj = taskElement(task);
+    const taskObj = taskElement(task);
     tasksContainer.appendChild(taskObj);
   });
 }

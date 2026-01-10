@@ -1,11 +1,24 @@
 import Task from "./modules/task";
 import Project from "./modules/project";
-import ProjectList from "./modules/projectList";
-import { updateCalendar } from "./modules/calendar";
+import projectList from "./modules/projectList";
+// import { updateCalendar } from "./modules/calendar";
 import "./assets/css/reset.css";
 import "./assets/css/style.css";
 import "./modules/calendarDOM";
+import { displayWebsite } from "./modules/displayController";
 
+projectList.addProject("Project");
+const proj = projectList.getProject("Project");
+proj.addTask(
+  new Task(
+    "testT",
+    "I need to write some random stuff to test I need to write some random stuff to test I need to write some random stuff to test",
+    new Date(),
+    "High",
+    "false"
+  )
+);
+console.log(proj.getTasks());
 /************** MAY HAVE TO UPDATE MODULE PARAMETERS LATER ON ***************/
 // for example, when interacting with DOM to delete project, will clicking its
 // div return its title and then parse the list for the title?
@@ -27,7 +40,7 @@ import "./modules/calendarDOM";
 /*********************** Project and Task test ************************/
 // const proj = new Project("Project");
 // const item = new Task("testT", "testDesc", "testDue", "testP", "testC");
-// const item2 = new Task("testT", "testDesc", "testDue", "testP", "testC");
+// const item2 = new Task("testT", "testDesc", new Date(), "testP", "testC");
 
 // console.log(item.getTitle());
 
@@ -57,3 +70,21 @@ import "./modules/calendarDOM";
 // then handle adding new tasks and displaying after adding
 //      take into account how it would need to update all displays for each
 //      sidebar option
+// document.addEventListener("click", (e) => {
+//   console.log(`You clicked on: ${e.target.className}`);
+//   if (
+//     e.target.closest(".sidebar-item") &&
+//     e.target.textContent.trim() === "All"
+//   ) {
+//     loadAllTasks();
+//   } else if (
+//     e.target.closest(".sidebar-item") &&
+//     e.target.textContent.trim() === "Upcoming"
+//   ) {
+//     loadUpcomingTasks();
+//   }
+// });
+displayWebsite();
+// after creating dom logic for going through different task filters,
+// try actually creating a task and see if it will pop up there
+// or if only the html is currently displaying
