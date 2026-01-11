@@ -290,6 +290,7 @@ dialog {
   border-radius: 6px;
   box-shadow: inset 0 1px 0 var(--highlight), var(--shadow);
   z-index: 1;
+  overflow: visible;
 }
 
 dialog:hover {
@@ -345,10 +346,10 @@ dialog::backdrop {
   cursor: pointer;
 }
 
-.dropdown:hover .dropdown-list {
+/* .dropdown:hover .dropdown-list {
   opacity: 1;
   visibility: visible;
-}
+} */
 
 .dropdown-select {
   display: flex;
@@ -372,7 +373,7 @@ dialog::backdrop {
   top: 110%;
   left: 0;
   right: 0;
-  visibility: hidden;
+  /* visibility: hidden; */
   opacity: 0;
 
   display: flex;
@@ -445,10 +446,10 @@ dialog::backdrop {
   position: relative;
 }
 
-.select-date:hover ~ .calendar {
+/* .select-date:hover ~ .calendar {
   visibility: visible;
   opacity: 1;
-}
+} */
 
 .calendar {
   position: absolute;
@@ -466,6 +467,7 @@ dialog::backdrop {
   border: 1px solid var(--bg-light);
   border-radius: 12px;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+  opacity: 0;
 }
 
 .header {
