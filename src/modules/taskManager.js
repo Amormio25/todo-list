@@ -10,6 +10,7 @@ const taskManager = {
     });
     return tasks;
   },
+
   getTodayTasks: () => {
     const tasks = taskManager.getAllTasks();
     return tasks.filter((task) => isToday(task.getDueDate()));

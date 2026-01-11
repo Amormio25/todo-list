@@ -6,7 +6,10 @@ function loadImportantTasks() {
   heading.textContent = "Important";
 
   const numTasks = document.querySelector(".view-num-tasks");
-  numTasks.textContent = taskManager.getImportantTasks().length;
+  numTasks.textContent =
+    taskManager.getImportantTasks().length != 1
+      ? taskManager.getImportantTasks().length + " tasks"
+      : taskManager.getImportantTasks().length + " task";
 
   const tasksContainer = document.querySelector(".tasks-container");
   tasksContainer.innerHTML = "";

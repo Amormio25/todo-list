@@ -6,7 +6,10 @@ function loadAllTasks() {
   heading.textContent = "All";
 
   const numTasks = document.querySelector(".view-num-tasks");
-  numTasks.textContent = taskManager.getAllTasks().length;
+  numTasks.textContent =
+    taskManager.getAllTasks().length != 1
+      ? taskManager.getAllTasks().length + " tasks"
+      : taskManager.getAllTasks().length + " task";
 
   const tasksContainer = document.querySelector(".tasks-container");
   tasksContainer.innerHTML = "";

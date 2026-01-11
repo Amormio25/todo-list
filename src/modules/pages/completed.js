@@ -6,7 +6,10 @@ function loadCompletedTasks() {
   heading.textContent = "Completed";
 
   const numTasks = document.querySelector(".view-num-tasks");
-  numTasks.textContent = taskManager.getCompletedTasks().length;
+  numTasks.textContent =
+    taskManager.getCompletedTasks().length != 1
+      ? taskManager.getCompletedTasks().length + " tasks"
+      : taskManager.getCompletedTasks().length + " task";
 
   const tasksContainer = document.querySelector(".tasks-container");
   tasksContainer.innerHTML = "";

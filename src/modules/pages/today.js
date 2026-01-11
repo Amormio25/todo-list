@@ -6,7 +6,10 @@ function loadTodayTasks() {
   heading.textContent = "Today";
 
   const numTasks = document.querySelector(".view-num-tasks");
-  numTasks.textContent = taskManager.getTodayTasks().length;
+  numTasks.textContent =
+    taskManager.getTodayTasks().length != 1
+      ? taskManager.getTodayTasks().length + " tasks"
+      : taskManager.getTodayTasks().length + " task";
 
   const tasksContainer = document.querySelector(".tasks-container");
   tasksContainer.innerHTML = "";

@@ -6,7 +6,10 @@ function loadUpcomingTasks() {
   heading.textContent = "Upcoming";
 
   const numTasks = document.querySelector(".view-num-tasks");
-  numTasks.textContent = taskManager.getUpcomingTasks().length;
+  numTasks.textContent =
+    taskManager.getUpcomingTasks().length != 1
+      ? taskManager.getUpcomingTasks().length + " tasks"
+      : taskManager.getUpcomingTasks().length + " task";
 
   const tasksContainer = document.querySelector(".tasks-container");
   tasksContainer.innerHTML = "";

@@ -25,7 +25,16 @@ const taskElement = (task) => {
   taskTextDiv.appendChild(taskDescription);
 
   const taskDate = createElementWithClass("div", "task-date");
-  // taskDate.textContent = task.getDueDate();
+
+  const options = {
+    month: "2-digit",
+    day: "2-digit",
+    year: "2-digit",
+  };
+  const formattedDate = new Intl.DateTimeFormat("en-US", options).format(
+    task.getDueDate()
+  );
+  taskDate.textContent = formattedDate;
 
   const svgNS = "http://www.w3.org/2000/svg";
   const editSvg = document.createElementNS(svgNS, "svg");
