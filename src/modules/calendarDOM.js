@@ -36,6 +36,7 @@ export const renderCalendar = (year, month) => {
       dateElement.classList.add("active");
     }
     dateElement.textContent = date.getDate();
+    dateElement.id = `${month + 1}/${date.getDate()}/${year}`;
 
     dateElement.addEventListener("click", () => {
       const activeDate = datesElement.querySelector(".date.active");
