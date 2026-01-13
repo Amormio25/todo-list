@@ -7,15 +7,14 @@ import Task from "./task";
 
 function setActivePage(event, sidebar) {
   // probably add logic here to work for projects as well
-  if (!event.target.closest(".sidebar-item")) return;
+  const sidebarItem = event.target.closest(".sidebar-item");
+  if (!sidebarItem) return;
 
-  const linkText = event.target
-    .closest(".sidebar-item")
-    .querySelector(".sidebar-link span");
+  const linkText = sidebarItem.querySelector(".sidebar-link span");
 
   const activePage = sidebar.querySelector(".active");
   activePage.classList.remove("active");
-  event.target.closest(".sidebar-item").classList.add("active");
+  sidebarItem.classList.add("active");
 
   const pageLoaders = {
     All: loadAllTasks,
@@ -88,7 +87,7 @@ function handleCreateTask() {
     if (
       !dropdownList.classList.contains("hide") &&
       !event.target.closest(".dropdown-list") &&
-      !event.target.closest(".select-priority")
+      !event.target.matches(".select-priority")
     ) {
       dropdownList.classList.toggle("hide");
     }
