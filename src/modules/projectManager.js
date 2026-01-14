@@ -16,11 +16,33 @@ const projectManager = {
     projectLink.appendChild(projectText);
     projectItem.appendChild(projectLink);
     projectSection.appendChild(projectItem);
+
+    const sidebar = document.querySelector(".sidebar");
+    const activePage = sidebar.querySelector(".active");
+    activePage.classList.remove("active");
+    projectItem.classList.add("active");
   },
 
-  loadProjectTasks: () => {},
+  loadProjectView: (title) => {
+    const project = projectList.getProject(title);
+    const heading = document.querySelector(".view-title");
+    heading.textContent = project.getProjectTitle();
 
-  // when click proj link, get its tasks, render, update view
+    const numTasks = document.querySelector(".view-num-tasks");
+    numTasks.textContent =
+      project.getTasks().length != 1
+        ? project.getTasks().length + " tasks"
+        : project.getTasks().length + " task";
+
+    const tasksContainer = document.querySelector(".tasks-container");
+    tasksContainer.innerHTML = "";
+
+    const tasks = project.getTasks();
+    tasks.forEach((task) => {
+      const taskObj = taskElement(task);
+      tasksContainer.appendChild(taskObj);
+    });
+  },
 };
 
 export { projectManager };

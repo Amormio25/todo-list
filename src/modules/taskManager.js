@@ -1,6 +1,8 @@
 import { isToday, isThisWeek } from "date-fns";
 import projectList from "./projectList";
 
+// consider turning the individual task pages into one that
+// does like load${filter}Tasks
 const taskManager = {
   getAllTasks: () => {
     const projects = projectList.getProjectList();

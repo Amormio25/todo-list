@@ -124,6 +124,7 @@ function handleCreateProject() {
   addButton.addEventListener("click", () => {
     const title = projectForm.querySelector("#form-title").value;
     projectManager.createProject(title);
+    projectManager.loadProjectView(title);
     // projectList.addProject(title);
     // console.log(projectList.getProjectList());
     // add the project as a sidebar item, make it active
