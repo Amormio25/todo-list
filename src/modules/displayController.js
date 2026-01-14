@@ -1,9 +1,11 @@
-import { loadAllTasks } from "./pages/all";
-import { loadTodayTasks } from "./pages/today";
-import { loadUpcomingTasks } from "./pages/upcoming";
-import { loadImportantTasks } from "./pages/important";
-import { loadCompletedTasks } from "./pages/completed";
+import { loadAllTasks } from "./task_pages/all";
+import { loadTodayTasks } from "./task_pages/today";
+import { loadUpcomingTasks } from "./task_pages/upcoming";
+import { loadImportantTasks } from "./task_pages/important";
+import { loadCompletedTasks } from "./task_pages/completed";
 import Task from "./task";
+import projectList from "./projectList";
+import { projectManager } from "./projectManager";
 
 function setActivePage(event, sidebar) {
   // probably add logic here to work for projects as well
@@ -27,23 +29,20 @@ function setActivePage(event, sidebar) {
   loadPage();
 }
 
-// need event listeners for handling sidebar (think about if u want to implement
-// the project links here or somewhere else)
-// need event listeners for creating task (which should also encapsulate buttons
-// in the task form)
-// need event listeners for task container which should respond to edit, delete,
-// completed, and clicking on the task element which should bring up the task editor
-
-// function handleSidebar() {}
-
+// currently has a bug
+// cancelling then returning makes the select buttons not work, then cancel again, then they do work, and it repeats
+// this and project, try to find way to prevent default reload
+// default should actually load home page, and filters shouldnt have an add task button
 function handleCreateTask() {
-  const taskForm = document.querySelector("dialog");
+  const taskForm = document.querySelector("#tasks");
   const task = new Task();
 
   const selectPriorityButton = taskForm.querySelector(".select-priority");
   const dropdownList = taskForm.querySelector(".dropdown-list");
   const selectDateButton = taskForm.querySelector(".select-date");
   const calendar = taskForm.querySelector(".calendar");
+  const cancelButton = taskForm.querySelector(".cancel");
+  const addButton = taskForm.querySelector(".add");
 
   selectDateButton.addEventListener("click", () =>
     calendar.classList.toggle("hide")
@@ -75,6 +74,21 @@ function handleCreateTask() {
     }
   });
 
+  cancelButton.addEventListener("click", () => {
+    taskForm.close();
+  });
+
+  addButton.addEventListener("click", () => {
+    // prevent default (submit)
+    // add the task to the current project (home by default)
+    //    ensure that the current project resides in the only instance of
+    //    the projectList so that the pages can call taskManager methods
+    //    and find the project from the same projectList
+    // re-render the current project view (diff func)
+    // plan
+    // make sidebar project links work first
+  });
+
   // handle clicking away with open calendar/dropdown
   taskForm.addEventListener("click", (event) => {
     if (
@@ -92,12 +106,30 @@ function handleCreateTask() {
       dropdownList.classList.toggle("hide");
     }
   });
+
   taskForm.showModal();
 }
 
-function handleFormButtons(target) {
-  // if cancel closemodal
-  // else add the task to project and update task filters and re-render current page
+function handleCreateProject() {
+  const projectForm = document.querySelector("#projects");
+  projectForm.showModal();
+
+  const cancelButton = projectForm.querySelector(".cancel");
+  const addButton = projectForm.querySelector(".add");
+
+  cancelButton.addEventListener("click", () => {
+    projectForm.close();
+  });
+
+  addButton.addEventListener("click", () => {
+    const title = projectForm.querySelector("#form-title").value;
+    projectManager.createProject(title);
+    // projectList.addProject(title);
+    // console.log(projectList.getProjectList());
+    // add the project as a sidebar item, make it active
+    // display the project view
+    projectForm.close();
+  });
 }
 
 function handleTaskUpdates(target) {}
@@ -111,7 +143,13 @@ function displayWebsite() {
 
   loadTodayTasks(); // load this by default
 
-  sidebar.addEventListener("click", (event) => setActivePage(event, sidebar));
+  sidebar.addEventListener("click", (event) => {
+    if (event.target.closest("#add-project")) {
+      handleCreateProject();
+    } else if (!event.target.closest(".sidebar-item--header")) {
+      setActivePage(event, sidebar);
+    }
+  });
   createTaskButton.addEventListener("click", handleCreateTask);
   tasksContainer.addEventListener("click", handleTaskUpdates);
 }

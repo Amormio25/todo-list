@@ -73,7 +73,11 @@
           <li class="sidebar-item sidebar-item--header">
             <a class="sidebar-link--bar">
               <span>My Projects</span>
-              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+              <svg
+                id="add-project"
+                xmlns="http://www.w3.org/2000/svg"
+                viewBox="0 0 24 24"
+              >
                 <path d="M19,13H13V19H11V13H5V11H11V5H13V11H19V13Z" />
               </svg>
             </a>
@@ -159,19 +163,19 @@
           </div>
         </section>
 
-        <dialog data-modal closed>
-          <form action="" method="post">
+        <dialog id="tasks" data-modal closed>
+          <form action="" method="">
             <section class="form-container">
               <input
                 id="form-title"
                 type="text"
-                placeholder="Test Title"
+                placeholder="Task Title"
                 required
               />
               <input
                 id="form-description"
                 type="text"
-                placeholder="Test Description"
+                placeholder="Task Description"
                 required
               />
               <div class="form-details">
@@ -210,8 +214,24 @@
                 </div>
               </div>
               <div class="form-buttons">
-                <button class="cancel">Cancel</button>
-                <button class="add">Add</button>
+                <button class="cancel" type="button">Cancel</button>
+                <button class="add" type="button">Add</button>
+              </div>
+            </section>
+          </form>
+        </dialog>
+        <dialog id="projects" data-modal closed>
+          <form action="" method="">
+            <section class="form-container">
+              <input
+                id="form-title"
+                type="text"
+                placeholder="Project Title"
+                required
+              />
+              <div class="form-buttons">
+                <button class="cancel" type="button">Cancel</button>
+                <button class="add" type="button">Add</button>
               </div>
             </section>
           </form>

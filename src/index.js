@@ -18,6 +18,7 @@ proj.addTask(
     "false"
   )
 );
+console.log(projectList.getProjectList());
 console.log(proj.getTasks());
 /************** MAY HAVE TO UPDATE MODULE PARAMETERS LATER ON ***************/
 // for example, when interacting with DOM to delete project, will clicking its
