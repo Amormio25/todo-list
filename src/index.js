@@ -7,19 +7,19 @@ import "./assets/css/style.css";
 import "./modules/calendarDOM";
 import { displayWebsite } from "./modules/displayController";
 
-projectList.addProject("Project");
-const proj = projectList.getProject("Project");
-proj.addTask(
-  new Task(
-    "testT",
-    "I need to write some random stuff to test I need to write some random stuff to test I need to write some random stuff to test",
-    new Date(),
-    "High",
-    "false"
-  )
-);
-console.log(projectList.getProjectList());
-console.log(proj.getTasks());
+// projectList.addProject("Project");
+// const proj = projectList.getProject("Project");
+// proj.addTask(
+//   new Task(
+//     "testT",
+//     "I need to write some random stuff to test I need to write some random stuff to test I need to write some random stuff to test",
+//     new Date(),
+//     "High",
+//     "false"
+//   )
+// );
+// console.log(projectList.getProjectList());
+// console.log(proj.getTasks());
 /************** MAY HAVE TO UPDATE MODULE PARAMETERS LATER ON ***************/
 // for example, when interacting with DOM to delete project, will clicking its
 // div return its title and then parse the list for the title?

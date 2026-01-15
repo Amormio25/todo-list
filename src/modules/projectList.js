@@ -7,7 +7,7 @@ class ProjectList {
     if (!new.target) {
       throw Error("Use the new operator to create a new object.");
     }
-    this.#projectList = [new Project("Default Project")];
+    this.#projectList = [new Project("Home")];
   }
 
   addProject(title) {
