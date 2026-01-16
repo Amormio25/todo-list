@@ -5,7 +5,7 @@ function createElementWithClass(element, className) {
   return newElement;
 }
 
-const taskElement = (task) => {
+const createTaskElement = (task) => {
   const taskItem = createElementWithClass("div", "task-item");
   const checkbox = createElementWithClass("button", "task-checkbox");
   const taskItemRight = createElementWithClass("div", "task-item-right");
@@ -62,4 +62,4 @@ const taskElement = (task) => {
   return taskItem;
 };
 
-export default taskElement;
+export default createTaskElement;

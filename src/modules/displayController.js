@@ -1,46 +1,11 @@
-import { loadAllTasks } from "./task_pages/all";
-import { loadTodayTasks } from "./task_pages/today";
-import { loadUpcomingTasks } from "./task_pages/upcoming";
-import { loadImportantTasks } from "./task_pages/important";
-import { loadCompletedTasks } from "./task_pages/completed";
 import Task from "./task";
-import projectList from "./projectList";
-import { projectManager } from "./projectManager";
 import { renderPage } from "./renderPage";
-import { add } from "date-fns";
+import { createProjectElement } from "./projectDOM";
 
+// remember in the future to try switching to form post method with action
+// linking to handler
+// can see our add buttons have issue of keeping previously added name
 function setActivePage(event, sidebar) {
-  // probably add logic here to work for projects as well
-  // const projectItem = event.target.closest(".sidebar-item.project-item");
-  // if (projectItem) {
-  //   const linkText = sidebarItem.querySelector(".sidebar-link span");
-  //   const activePage = sidebar.querySelector(".active");
-  //   activePage.classList.remove("active");
-  //   sidebarItem.classList.add("active");
-
-  //   const pageLoaders = {
-
-  //   }
-  // } else {
-  //   const sidebarItem = event.target.closest(".sidebar-item");
-  //   if (!sidebarItem) return;
-
-  //   const linkText = sidebarItem.querySelector(".sidebar-link span");
-
-  //   const activePage = sidebar.querySelector(".active");
-  //   activePage.classList.remove("active");
-  //   sidebarItem.classList.add("active");
-
-  //   const pageLoaders = {
-  //     All: loadAllTasks,
-  //     Today: loadTodayTasks,
-  //     Upcoming: loadUpcomingTasks,
-  //     Important: loadImportantTasks,
-  //     Completed: loadCompletedTasks,
-  //   };
-  //   const loadPage = pageLoaders[linkText.textContent.trim()];
-  //   loadPage();
-  // }
   const sidebarItem = event.target.closest(".sidebar-item");
   if (!sidebarItem) return;
 
@@ -52,15 +17,6 @@ function setActivePage(event, sidebar) {
   activePage.classList.remove("active");
   sidebarItem.classList.add("active");
 
-  // const pageLoaders = {
-  //   All: loadAllTasks,
-  //   Today: loadTodayTasks,
-  //   Upcoming: loadUpcomingTasks,
-  //   Important: loadImportantTasks,
-  //   Completed: loadCompletedTasks,
-  // };
-  // const loadPage = pageLoaders[linkText.textContent.trim()];
-  // loadPage();
   const isProject = event.target.closest(".sidebar-item.project-item");
   renderPage(linkText, isProject);
 }
@@ -158,35 +114,17 @@ function handleCreateProject() {
     projectForm.close();
   });
 
-  // if (element.getAttribute('listener') !== 'true') {
-  //   element.addEventListener('click', function (e) {
-  //       const elementClicked = e.target;
-  //       elementClicked.setAttribute('listener', 'true');
-  //       console.log('event has been attached');
-  //  });
-  // }
-  if (addButton.getAttribute("listener") !== "true") {
-    addButton.addEventListener("click", (event) => {
-      const clicked = event.target;
-      clicked.setAttribute("listener", "true");
+  addButton.addEventListener(
+    "click",
+    () => {
       const title = projectForm.querySelector("#form-title").value;
-      projectManager.createProject(title);
-      projectManager.loadProjectView(title);
+      createProjectElement(title);
+      renderPage(title, true);
       projectForm.close();
-    });
-  }
-  // addButton.addEventListener("click", () => {
-  //   const title = projectForm.querySelector("#form-title").value;
-  //   projectManager.createProject(title);
-  //   projectManager.loadProjectView(title);
-  //   // projectList.addProject(title);
-  //   // console.log(projectList.getProjectList());
-  //   // add the project as a sidebar item, make it active
-  //   // display the project view
-  //   projectForm.close();
-  // });
-
-  // has event listener problem where it adds one more each time
+      projectForm.close();
+    },
+    { once: true }
+  );
 }
 
 function handleTaskUpdates(target) {}
