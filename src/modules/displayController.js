@@ -27,15 +27,15 @@ function setActivePage(event, sidebar) {
 // default should actually load home page, and filters shouldnt have an add task button
 // also try to load home page by default
 function handleCreateTask() {
-  const taskForm = document.querySelector("#tasks");
+  const taskDialog = document.querySelector("#tasks");
   const task = new Task();
 
-  const selectPriorityButton = taskForm.querySelector(".select-priority");
-  const dropdownList = taskForm.querySelector(".dropdown-list");
-  const selectDateButton = taskForm.querySelector(".select-date");
-  const calendar = taskForm.querySelector(".calendar");
-  const cancelButton = taskForm.querySelector(".cancel");
-  const addButton = taskForm.querySelector(".add");
+  const selectPriorityButton = taskDialog.querySelector(".select-priority");
+  const dropdownList = taskDialog.querySelector(".dropdown-list");
+  const selectDateButton = taskDialog.querySelector(".select-date");
+  const calendar = taskDialog.querySelector(".calendar");
+  const cancelButton = taskDialog.querySelector(".cancel");
+  const addButton = taskDialog.querySelector(".add");
 
   selectDateButton.addEventListener("click", () =>
     calendar.classList.toggle("hide")
@@ -68,7 +68,7 @@ function handleCreateTask() {
   });
 
   cancelButton.addEventListener("click", () => {
-    taskForm.close();
+    taskDialog.close();
   });
 
   addButton.addEventListener("click", () => {
@@ -83,7 +83,7 @@ function handleCreateTask() {
   });
 
   // handle clicking away with open calendar/dropdown
-  taskForm.addEventListener("click", (event) => {
+  taskDialog.addEventListener("click", (event) => {
     if (
       !calendar.classList.contains("hide") &&
       !event.target.closest(".calendar") &&
@@ -100,28 +100,28 @@ function handleCreateTask() {
     }
   });
 
-  taskForm.showModal();
+  taskDialog.showModal();
 }
 
 function handleCreateProject() {
-  const projectForm = document.querySelector("#projects");
-  projectForm.showModal();
+  const projectDialog = document.querySelector("#projects");
+  projectDialog.showModal();
 
-  const cancelButton = projectForm.querySelector(".cancel");
-  const addButton = projectForm.querySelector(".add");
+  const cancelButton = projectDialog.querySelector(".cancel");
+  const addButton = projectDialog.querySelector(".add");
 
   cancelButton.addEventListener("click", () => {
-    projectForm.close();
+    projectDialog.close();
   });
 
   addButton.addEventListener(
     "click",
     () => {
-      const title = projectForm.querySelector("#form-title").value;
+      const title = projectDialog.querySelector("#form-title").value;
       createProjectElement(title);
       renderPage(title, true);
-      projectForm.close();
-      projectForm.close();
+      projectDialog.querySelector("form").reset();
+      projectDialog.close();
     },
     { once: true }
   );
@@ -134,7 +134,8 @@ function displayWebsite() {
   const createTaskButton = document.querySelector(".view-add-tasks");
   const tasksContainer = document.querySelector(".tasks-container");
 
-  // loadTodayTasks();
+  createProjectElement("Home");
+  renderPage("Home", true);
 
   sidebar.addEventListener("click", (event) => {
     if (event.target.closest("#add-project")) {
