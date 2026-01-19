@@ -110,21 +110,52 @@ function handleCreateProject() {
   const cancelButton = projectDialog.querySelector(".cancel");
   const addButton = projectDialog.querySelector(".add");
 
-  cancelButton.addEventListener("click", () => {
-    projectDialog.close();
-  });
-
-  addButton.addEventListener(
+  cancelButton.addEventListener(
     "click",
     () => {
-      const title = projectDialog.querySelector("#form-title").value;
-      createProjectElement(title);
-      renderPage(title, true);
-      projectDialog.querySelector("form").reset();
       projectDialog.close();
+      addButton.removeEventListener("click", handleAddButton);
     },
     { once: true }
   );
+
+  // add text input event listener on blur
+  // if empty error
+  // if not empty make sure theres text limit
+  // since our add button is once true, must make it work for if clicked
+  // and it wasn't valid
+  const title = projectDialog.querySelector("#form-title");
+  const errorBox = document.querySelector(".error-box");
+  title.addEventListener("blur", () => {
+    if (title.value.trim() === "" || title.value.length > 45) {
+      title.classList.add("invalid");
+      errorBox.style.opacity = 1;
+    } else {
+      title.classList.remove("invalid");
+      errorBox.style.opacity = 0;
+    }
+  });
+
+  function handleAddButton() {
+    if (title.classList.contains("invalid")) return;
+    createProjectElement(title.value);
+    renderPage(title.value, true);
+    projectDialog.querySelector("form").reset();
+    projectDialog.close();
+    addButton.removeEventListener("click", handleAddButton);
+  }
+  addButton.addEventListener("click", handleAddButton);
+  // addButton.addEventListener(
+  //   "click",
+  //   () => {
+  //     if (title.classList.contains("invalid")) return;
+  //     createProjectElement(title.value);
+  //     renderPage(title.value, true);
+  //     projectDialog.querySelector("form").reset();
+  //     projectDialog.close();
+  //   },
+  //   { once: true }
+  // );
 }
 
 function handleTaskUpdates(target) {}
