@@ -138,8 +138,8 @@ function handleCreateProject() {
 
   function handleAddButton() {
     if (title.classList.contains("invalid")) return;
-    createProjectElement(title.value);
-    renderPage(title.value, true);
+    createProjectElement(title.value.trim());
+    renderPage(title.value.trim(), true);
     projectDialog.querySelector("form").reset();
     projectDialog.close();
     addButton.removeEventListener("click", handleAddButton);
