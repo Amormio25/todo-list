@@ -71,6 +71,9 @@
       <section class="sidebar-section">
         <ul class="sidebar-list sidebar-section--projects">
           <li class="sidebar-item sidebar-item--header">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+              <path d="M10,20V14H14V20H19V12H22L12,3L2,12H5V20H10Z" />
+            </svg>
             <a class="sidebar-link--bar">
               <span>My Projects</span>
               <svg
@@ -159,7 +162,7 @@
           <form action="" method="">
             <section class="form-container">
               <input
-                id="form-title"
+                class="form-title"
                 type="text"
                 placeholder="Task Title"
                 required
@@ -167,7 +170,7 @@
               <input
                 id="form-description"
                 type="text"
-                placeholder="Task Description"
+                placeholder="Task Description (Optional)"
                 required
               />
               <div class="form-details">
@@ -205,9 +208,12 @@
                   </ul>
                 </div>
               </div>
-              <div class="form-buttons">
-                <button class="cancel" type="button">Cancel</button>
-                <button class="add" type="button">Add</button>
+              <div class="form-submit">
+                <span></span>
+                <div class="form-buttons">
+                  <button class="cancel" type="button">Cancel</button>
+                  <button class="add" type="button">Add</button>
+                </div>
               </div>
             </section>
           </form>
@@ -216,7 +222,7 @@
           <form action="" method="">
             <section class="form-container">
               <input
-                id="form-title"
+                class="form-title"
                 type="text"
                 placeholder="Project Title"
                 required

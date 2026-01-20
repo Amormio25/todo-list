@@ -1,10 +1,9 @@
 import Task from "./task";
+import projectList from "./projectList";
 import { renderPage } from "./renderPage";
 import { createProjectElement } from "./projectDOM";
+import { renderCalendar } from "./calendarDOM";
 
-// remember in the future to try switching to form post method with action
-// linking to handler
-// can see our add buttons have issue of keeping previously added name
 function setActivePage(event, sidebar) {
   const sidebarItem = event.target.closest(".sidebar-item");
   if (!sidebarItem) return;
@@ -21,14 +20,8 @@ function setActivePage(event, sidebar) {
   renderPage(linkText, isProject);
 }
 
-// currently has a bug
-// cancelling then returning makes the select buttons not work, then cancel again, then they do work, and it repeats
-// this and project, try to find way to prevent default reload
-// default should actually load home page, and filters shouldnt have an add task button
-// also try to load home page by default
 function handleCreateTask() {
   const taskDialog = document.querySelector("#tasks");
-  const task = new Task();
 
   const selectPriorityButton = taskDialog.querySelector(".select-priority");
   const dropdownList = taskDialog.querySelector(".dropdown-list");
@@ -37,11 +30,15 @@ function handleCreateTask() {
   const cancelButton = taskDialog.querySelector(".cancel");
   const addButton = taskDialog.querySelector(".add");
 
-  selectDateButton.addEventListener("click", () =>
-    calendar.classList.toggle("hide")
-  );
+  function handleSelectDate() {
+    calendar.classList.toggle("hide");
+  }
 
-  calendar.addEventListener("click", (event) => {
+  function handleSelectPriority() {
+    dropdownList.classList.toggle("hide");
+  }
+
+  function handleCalendar() {
     if (event.target.matches(".date")) {
       // task.setDueDate()
       // target.textconent = date
@@ -49,40 +46,98 @@ function handleCreateTask() {
       calendar.classList.toggle("hide");
       selectDateButton.textContent = event.target.id;
     }
-  });
+  }
 
-  selectPriorityButton.addEventListener("click", () => {
-    dropdownList.classList.toggle("hide");
-  });
-
-  dropdownList.addEventListener("click", (event) => {
+  function handleDropdownList() {
     if (event.target.matches(".dropdown-option")) {
       selectPriorityButton.textContent = event.target.textContent;
-      task.setPriority(event.target.textContent);
+      // task.setPriority(event.target.textContent);
 
       // console.log("now here");
       // console.log(task.getPriority());
       dropdownList.classList.toggle("hide");
       // console.log(options.classList);
     }
-  });
+  }
 
-  cancelButton.addEventListener("click", () => {
-    taskDialog.close();
-  });
+  function handleAddButton() {
+    const title = taskDialog.querySelector(".form-title").value;
+    const description = taskDialog.querySelector("#form-description").value;
+    const completedStatus = false;
 
-  addButton.addEventListener("click", () => {
-    // prevent default (submit)
-    // add the task to the current project (home by default)
-    //    ensure that the current project resides in the only instance of
-    //    the projectList so that the pages can call taskManager methods
-    //    and find the project from the same projectList
-    // re-render the current project view (diff func)
-    // plan
-    // make sidebar project links work first
-  });
+    if (
+      title.trim() === "" ||
+      title.length > 45 ||
+      selectDateButton.textContent === "Select date" ||
+      selectPriorityButton.textContent === "Select priority"
+    ) {
+      return;
+    }
+    const dueDate = new Date(selectDateButton.textContent);
+    const priority = selectPriorityButton.textContent;
 
-  // handle clicking away with open calendar/dropdown
+    const sidebar = document.querySelector(".sidebar");
+    const activePage = sidebar
+      .querySelector(".active")
+      .querySelector("span").textContent;
+
+    const project = projectList.getProject(activePage);
+    const taskExists = project.getTasks().some((task) => {
+      return (
+        task.getTitle() === title &&
+        task.getDescription() === description &&
+        task.getDueDate().getTime() === dueDate.getTime() &&
+        task.getPriority() === priority
+      );
+    });
+    if (taskExists) {
+      taskDialog.querySelector(".form-submit span").textContent =
+        "Cannot create duplicate tasks.";
+      return;
+    }
+
+    project.addTask(
+      new Task(title, description, dueDate, priority, completedStatus)
+    );
+
+    function resetForm() {
+      taskDialog.querySelector("form").reset();
+      selectDateButton.textContent = "Select date";
+      selectPriorityButton.textContent = "Select priority";
+      renderCalendar(new Date().getFullYear(), new Date().getMonth());
+      taskDialog.querySelector(".form-submit span").textContent = "";
+      taskDialog.close();
+      detachDialogListeners();
+    }
+    renderPage(activePage, true);
+    resetForm();
+  }
+
+  function attachDialogListeners() {
+    selectDateButton.addEventListener("click", handleSelectDate);
+    selectPriorityButton.addEventListener("click", handleSelectPriority);
+    calendar.addEventListener("click", handleCalendar);
+    dropdownList.addEventListener("click", handleDropdownList);
+    addButton.addEventListener("click", handleAddButton);
+  }
+
+  function detachDialogListeners() {
+    selectDateButton.removeEventListener("click", handleSelectDate);
+    selectPriorityButton.removeEventListener("click", handleSelectPriority);
+    calendar.removeEventListener("click", handleCalendar);
+    dropdownList.removeEventListener("click", handleDropdownList);
+    addButton.removeEventListener("click", handleAddButton);
+  }
+
+  cancelButton.addEventListener(
+    "click",
+    () => {
+      taskDialog.close();
+      detachDialogListeners();
+    },
+    { once: true }
+  );
+
   taskDialog.addEventListener("click", (event) => {
     if (
       !calendar.classList.contains("hide") &&
@@ -99,8 +154,8 @@ function handleCreateTask() {
       dropdownList.classList.toggle("hide");
     }
   });
-
   taskDialog.showModal();
+  attachDialogListeners();
 }
 
 function handleCreateProject() {
@@ -119,12 +174,7 @@ function handleCreateProject() {
     { once: true }
   );
 
-  // add text input event listener on blur
-  // if empty error
-  // if not empty make sure theres text limit
-  // since our add button is once true, must make it work for if clicked
-  // and it wasn't valid
-  const title = projectDialog.querySelector("#form-title");
+  const title = projectDialog.querySelector(".form-title");
   const errorBox = document.querySelector(".error-box");
   title.addEventListener("blur", () => {
     if (title.value.trim() === "" || title.value.length > 45) {
@@ -145,17 +195,6 @@ function handleCreateProject() {
     addButton.removeEventListener("click", handleAddButton);
   }
   addButton.addEventListener("click", handleAddButton);
-  // addButton.addEventListener(
-  //   "click",
-  //   () => {
-  //     if (title.classList.contains("invalid")) return;
-  //     createProjectElement(title.value);
-  //     renderPage(title.value, true);
-  //     projectDialog.querySelector("form").reset();
-  //     projectDialog.close();
-  //   },
-  //   { once: true }
-  // );
 }
 
 function handleTaskUpdates(target) {}
