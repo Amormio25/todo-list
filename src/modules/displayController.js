@@ -20,9 +20,32 @@ function setActivePage(event, sidebar) {
   renderPage(linkText, isProject);
 }
 
-function handleCreateTask() {
-  const taskDialog = document.querySelector("#tasks");
+function handleScreenChange(sidebar) {
+  if (sidebar.classList.contains("open")) {
+    sidebar.classList.remove("open");
+  }
+}
 
+function toggleSidebar(sidebar) {
+  const body = document.body;
+  const mql = matchMedia("(max-width: 768px)");
+
+  if (mql.matches) {
+    // within the width should not change grid-tcs
+    sidebar.classList.toggle("open");
+    body.classList.remove("collapsed");
+    sidebar.classList.remove("collapsed");
+  } else {
+    // outside width should change grid-tcs
+    body.classList.toggle("collapsed");
+    sidebar.classList.toggle("collapsed");
+  }
+}
+
+function handleCreateTask(sidebar) {
+  handleScreenChange(sidebar); // close sidebar if create task button clicked
+
+  const taskDialog = document.querySelector("#tasks");
   const selectPriorityButton = taskDialog.querySelector(".select-priority");
   const dropdownList = taskDialog.querySelector(".dropdown-list");
   const selectDateButton = taskDialog.querySelector(".select-date");
@@ -197,10 +220,13 @@ function handleCreateProject() {
   addButton.addEventListener("click", handleAddButton);
 }
 
+// todo:
+// completing task, editing task, deleting task, viewing task
 function handleTaskUpdates(target) {}
 
 function displayWebsite() {
   const sidebar = document.querySelector(".sidebar");
+  const minimizeButton = document.querySelector(".sidebar-toggle");
   const createTaskButton = document.querySelector(".view-add-tasks");
   const tasksContainer = document.querySelector(".tasks-container");
 
@@ -217,7 +243,11 @@ function displayWebsite() {
       setActivePage(event, sidebar);
     }
   });
-  createTaskButton.addEventListener("click", handleCreateTask);
+  window.addEventListener("resize", () => handleScreenChange(sidebar));
+  minimizeButton.addEventListener("click", () => toggleSidebar(sidebar));
+  createTaskButton.addEventListener("click", () => handleCreateTask(sidebar));
+
+  // add logic here too to close sidebar if sidebar open
   tasksContainer.addEventListener("click", handleTaskUpdates);
 }
 

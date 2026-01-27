@@ -46,7 +46,11 @@ body {
   width: 100vw;
   height: 100vh;
   background-color: var(--bg-light);
-  transition: grid-template-columns 0.5s ease;
+  transition: grid-template-columns 0.3s ease;
+}
+
+body.collapsed {
+  grid-template-columns: 0 1fr;
 }
 
 #header {
@@ -60,6 +64,20 @@ body {
   font-weight: 600;
 }
 
+.sidebar-toggle {
+  width: 2rem;
+  height: 2rem;
+  padding: 0.25rem;
+  margin-right: 1rem;
+  border-radius: 4px;
+  stroke: var(--text) !important;
+}
+
+.sidebar-toggle:hover {
+  background-color: var(--primary-light);
+  cursor: pointer;
+}
+
 .header-inner {
   width: 100%;
 }
@@ -70,10 +88,18 @@ body {
   display: flex;
   flex-direction: column;
   gap: 5rem;
-  padding: 1rem;
+  width: 270px;
   min-width: 0;
-  overflow: hidden;
-  transition: transform 0.5s ease;
+  padding: 1rem;
+  transition: transform 0.3s ease;
+}
+
+.sidebar.open {
+  transform: translateX(0%);
+}
+
+.sidebar.collapsed {
+  transform: translateX(-100%);
 }
 
 .sidebar-list {
