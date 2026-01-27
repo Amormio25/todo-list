@@ -6,7 +6,7 @@ import { renderCalendar } from "./calendarDOM";
 
 function setActivePage(event, sidebar) {
   const sidebarItem = event.target.closest(".sidebar-item");
-  if (!sidebarItem) return;
+  if (event.target.closest(".sidebar-item--header")) return;
 
   const linkText = sidebarItem
     .querySelector(".sidebar-link span")
@@ -181,7 +181,9 @@ function handleCreateTask(sidebar) {
   attachDialogListeners();
 }
 
-function handleCreateProject() {
+function handleCreateProject(sidebar) {
+  handleScreenChange(sidebar); // close sidebar if create project button clicked
+
   const projectDialog = document.querySelector("#projects");
   projectDialog.showModal();
 
@@ -222,33 +224,25 @@ function handleCreateProject() {
 
 // todo:
 // completing task, editing task, deleting task, viewing task
-function handleTaskUpdates(target) {}
+function handleTaskUpdates(sidebar) {}
 
 function displayWebsite() {
-  const sidebar = document.querySelector(".sidebar");
-  const minimizeButton = document.querySelector(".sidebar-toggle");
-  const createTaskButton = document.querySelector(".view-add-tasks");
-  const tasksContainer = document.querySelector(".tasks-container");
-
   createProjectElement("Home");
   renderPage("Home", true);
 
-  sidebar.addEventListener("click", (event) => {
-    if (event.target.closest("#add-project")) {
-      handleCreateProject();
-    } else if (
-      event.target.closest(".sidebar-item") &&
-      !event.target.closest(".sidebar-item--header")
-    ) {
-      setActivePage(event, sidebar);
-    }
-  });
+  const sidebar = document.querySelector(".sidebar");
   window.addEventListener("resize", () => handleScreenChange(sidebar));
-  minimizeButton.addEventListener("click", () => toggleSidebar(sidebar));
-  createTaskButton.addEventListener("click", () => handleCreateTask(sidebar));
+  document.addEventListener("click", (event) => {
+    const target = event.target;
 
-  // add logic here too to close sidebar if sidebar open
-  tasksContainer.addEventListener("click", handleTaskUpdates);
+    if (target.closest(".sidebar-toggle")) toggleSidebar(sidebar);
+    else if (target.closest(".view-add-tasks")) handleCreateTask(sidebar);
+    else if (target.closest("#add-project")) handleCreateProject(sidebar);
+    else if (target.closest(".task-item")) handleTaskUpdates(sidebar);
+    else if (target.closest(".sidebar-item")) setActivePage(event, sidebar);
+    else if (!target.closest(".sidebar") && sidebar.classList.contains("open"))
+      sidebar.classList.remove("open");
+  });
 }
 
 export { displayWebsite };
