@@ -135,6 +135,7 @@ body.collapsed {
 
 .project-item span {
   width: 85%;
+  white-space: nowrap;
   text-overflow: ellipsis;
   overflow: hidden;
 }

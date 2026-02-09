@@ -4,22 +4,6 @@ import { renderPage } from "./renderPage";
 import { createProjectElement } from "./projectDOM";
 import { renderCalendar } from "./calendarDOM";
 
-function setActivePage(event, sidebar) {
-  const sidebarItem = event.target.closest(".sidebar-item");
-  if (event.target.closest(".sidebar-item--header")) return;
-
-  const linkText = sidebarItem
-    .querySelector(".sidebar-link span")
-    .textContent.trim();
-
-  const activePage = sidebar.querySelector(".active");
-  activePage.classList.remove("active");
-  sidebarItem.classList.add("active");
-
-  const isProject = event.target.closest(".sidebar-item.project-item");
-  renderPage(linkText, isProject);
-}
-
 function handleScreenChange(sidebar) {
   if (sidebar.classList.contains("open")) {
     sidebar.classList.remove("open");
@@ -161,6 +145,14 @@ function handleCreateTask(sidebar) {
     { once: true }
   );
 
+  document.addEventListener(
+    "keypress",
+    (event) => {
+      if (event.key === "Escape") detachDialogListeners();
+    },
+    { once: true }
+  );
+
   taskDialog.addEventListener("click", (event) => {
     if (
       !calendar.classList.contains("hide") &&
@@ -185,22 +177,39 @@ function handleCreateProject(sidebar) {
   handleScreenChange(sidebar); // close sidebar if create project button clicked
 
   const projectDialog = document.querySelector("#projects");
-  projectDialog.showModal();
-
   const cancelButton = projectDialog.querySelector(".cancel");
   const addButton = projectDialog.querySelector(".add");
+  const title = projectDialog.querySelector(".form-title");
+  const errorBox = document.querySelector(".error-box");
 
-  cancelButton.addEventListener(
-    "click",
-    () => {
-      projectDialog.close();
-      addButton.removeEventListener("click", handleAddButton);
+  function resetDialog() {
+    projectDialog.close();
+    title.classList.remove("invalid");
+    errorBox.style.opacity = 0;
+    addButton.removeEventListener("click", handleAddButton);
+  }
+
+  function handleAddButton() {
+    if (title.classList.contains("invalid") || title.value.trim() === "")
+      return;
+    createProjectElement(title.value.trim());
+    renderPage(title.value.trim(), true);
+    resetDialog();
+    projectDialog.querySelector("form").reset();
+  }
+
+  addButton.addEventListener("click", handleAddButton);
+
+  cancelButton.addEventListener("click", () => resetDialog(), { once: true });
+
+  document.addEventListener(
+    "keypress",
+    (event) => {
+      if (event.key === "Escape") resetDialog();
     },
     { once: true }
   );
 
-  const title = projectDialog.querySelector(".form-title");
-  const errorBox = document.querySelector(".error-box");
   title.addEventListener("blur", () => {
     if (title.value.trim() === "" || title.value.length > 45) {
       title.classList.add("invalid");
@@ -211,20 +220,30 @@ function handleCreateProject(sidebar) {
     }
   });
 
-  function handleAddButton() {
-    if (title.classList.contains("invalid")) return;
-    createProjectElement(title.value.trim());
-    renderPage(title.value.trim(), true);
-    projectDialog.querySelector("form").reset();
-    projectDialog.close();
-    addButton.removeEventListener("click", handleAddButton);
-  }
-  addButton.addEventListener("click", handleAddButton);
+  projectDialog.showModal();
 }
 
 // todo:
 // completing task, editing task, deleting task, viewing task
-function handleTaskUpdates(sidebar) {}
+function handleTaskUpdates(sidebar) {
+  handleScreenChange(sidebar); // close sidebar if task item clicked
+}
+
+function setActivePage(event, sidebar) {
+  const sidebarItem = event.target.closest(".sidebar-item");
+  if (event.target.closest(".sidebar-item--header")) return;
+
+  const linkText = sidebarItem
+    .querySelector(".sidebar-link span")
+    .textContent.trim();
+
+  const activePage = sidebar.querySelector(".active");
+  activePage.classList.remove("active");
+  sidebarItem.classList.add("active");
+
+  const isProject = event.target.closest(".sidebar-item.project-item");
+  renderPage(linkText, isProject);
+}
 
 function displayWebsite() {
   createProjectElement("Home");
