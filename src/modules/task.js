@@ -3,6 +3,7 @@ export default class Task {
     if (!new.target) {
       throw Error("Use the new operator to create a new object.");
     }
+    this.id = crypto.randomUUID();
     this.title = title;
     this.description = description;
     this.dueDate = dueDate;
@@ -11,6 +12,10 @@ export default class Task {
   }
 
   // SETTERS
+  setId(id) {
+    this.id = id;
+  }
+
   setTitle(title) {
     this.title = title;
   }
@@ -27,7 +32,11 @@ export default class Task {
     this.completedStatus = completedStatus;
   }
 
-  // SETTERS
+  // GETTERS
+  getId() {
+    return this.id;
+  }
+
   getTitle() {
     return this.title;
   }

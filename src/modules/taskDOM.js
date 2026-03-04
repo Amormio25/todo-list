@@ -12,6 +12,10 @@ const createTaskElement = (task) => {
   const taskTextDiv = createElementWithClass("div", "task-text");
   const taskDetails = createElementWithClass("div", "task-details");
 
+  taskItem.id = task.getId();
+  if (task.getCompletedStatus() === true) {
+    checkbox.classList.add("complete");
+  }
   taskItem.appendChild(checkbox);
   taskItem.appendChild(taskItemRight);
   taskItemRight.appendChild(taskTextDiv);
@@ -38,6 +42,7 @@ const createTaskElement = (task) => {
 
   const svgNS = "http://www.w3.org/2000/svg";
   const editSvg = document.createElementNS(svgNS, "svg");
+  editSvg.classList.add("edit");
   editSvg.setAttribute("viewBox", "0 0 24 24");
   const editPath = document.createElementNS(svgNS, "path");
   editPath.setAttribute(
@@ -47,6 +52,7 @@ const createTaskElement = (task) => {
   editSvg.appendChild(editPath);
 
   const deleteSvg = document.createElementNS(svgNS, "svg");
+  deleteSvg.classList.add("delete");
   deleteSvg.setAttribute("viewBox", "0 0 24 24");
   const deletePath = document.createElementNS(svgNS, "path");
   deletePath.setAttribute(

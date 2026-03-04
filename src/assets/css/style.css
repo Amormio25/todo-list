@@ -284,6 +284,11 @@ body.collapsed {
   background-color: transparent;
   border: 2px solid var(--text);
   border-radius: 50%;
+  cursor: pointer;
+}
+
+.task-checkbox.complete {
+  background-color: green;
 }
 
 .task-item-right {
@@ -386,7 +391,7 @@ dialog::backdrop {
   transition: 0.2s ease;
 }
 
-#form-description {
+.form-description {
   padding-bottom: 0.35rem;
   margin: 0.75rem 0 1.5rem 0;
   border-bottom: 1px solid var(--highlight);
@@ -394,7 +399,7 @@ dialog::backdrop {
   font-size: 0.75rem;
 }
 
-#form-description::placeholder {
+.form-description::placeholder {
   color: var(--text-muted);
   font-size: 0.75rem;
 }

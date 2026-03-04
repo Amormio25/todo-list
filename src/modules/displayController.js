@@ -4,6 +4,57 @@ import { renderPage } from "./renderPage";
 import { createProjectElement } from "./projectDOM";
 import { renderCalendar } from "./calendarDOM";
 
+// helpers
+function taskExists(title, description, dueDate, priority) {
+  const projects = projectList.getProjectList();
+  return projects.some((project) =>
+    project
+      .getTasks()
+      .some(
+        (task) =>
+          task.getTitle() === title &&
+          task.getDescription() === description &&
+          task.getDueDate().getTime() === dueDate &&
+          task.getPriority() === priority
+      )
+  );
+}
+
+function findTaskInProjects(id) {
+  const projects = projectList.getProjectList();
+  for (const project of projects) {
+    const task = project.getTask(id);
+    if (task) {
+      return task;
+    }
+  }
+  return undefined;
+}
+
+function getActivePage(sidebar) {
+  return sidebar.querySelector(".active").querySelector("span").textContent;
+}
+
+function getActiveProject(sidebar) {
+  const activePage = sidebar
+    .querySelector(".active")
+    .querySelector("span").textContent;
+
+  return projectList.getProject(activePage);
+}
+
+function isProjectPage(activePage) {
+  const TASK_FILTERS = new Set([
+    "All",
+    "Today",
+    "Upcoming",
+    "Important",
+    "Completed",
+  ]);
+  return !TASK_FILTERS.has(activePage);
+}
+
+// main handlers
 function handleScreenChange(sidebar) {
   if (sidebar.classList.contains("open")) {
     sidebar.classList.remove("open");
@@ -26,55 +77,53 @@ function toggleSidebar(sidebar) {
   }
 }
 
-function handleCreateTask(sidebar) {
-  handleScreenChange(sidebar); // close sidebar if create task button clicked
+function openTaskForm(target, sidebar, option) {
+  handleScreenChange(sidebar);
+  if (handleTaskUpdates(target, sidebar)) return;
 
   const taskDialog = document.querySelector("#tasks");
+  let formTitle = taskDialog.querySelector(".form-title");
+  let formDescription = taskDialog.querySelector(".form-description");
   const selectPriorityButton = taskDialog.querySelector(".select-priority");
   const dropdownList = taskDialog.querySelector(".dropdown-list");
   const selectDateButton = taskDialog.querySelector(".select-date");
   const calendar = taskDialog.querySelector(".calendar");
   const cancelButton = taskDialog.querySelector(".cancel");
-  const addButton = taskDialog.querySelector(".add");
+  const submitButton = taskDialog.querySelector(".add");
+  submitButton.textContent = option;
 
-  function handleSelectDate() {
-    calendar.classList.toggle("hide");
-  }
+  const resetForm = () => {
+    submitButton.textContent = option;
+    selectDateButton.textContent = "Select date";
+    selectPriorityButton.textContent = "Select priority";
+    renderCalendar(new Date().getFullYear(), new Date().getMonth());
+    taskDialog.querySelector("form").reset();
+    taskDialog.querySelector(".form-submit span").textContent = "";
+    taskDialog.close();
+    detachListeners();
+  };
 
-  function handleSelectPriority() {
-    dropdownList.classList.toggle("hide");
-  }
+  const populateForm = () => {
+    if (option !== "Update") return;
 
-  function handleCalendar() {
-    if (event.target.matches(".date")) {
-      // task.setDueDate()
-      // target.textconent = date
-      // calendar.style.opacity = 0;
-      calendar.classList.toggle("hide");
-      selectDateButton.textContent = event.target.id;
-    }
-  }
+    const taskItem = target.closest(".task-item");
 
-  function handleDropdownList() {
-    if (event.target.matches(".dropdown-option")) {
-      selectPriorityButton.textContent = event.target.textContent;
-      // task.setPriority(event.target.textContent);
+    const task = findTaskInProjects(taskItem.id);
+    formTitle.value = task.getTitle();
+    formDescription.value = task.getDescription();
 
-      // console.log("now here");
-      // console.log(task.getPriority());
-      dropdownList.classList.toggle("hide");
-      // console.log(options.classList);
-    }
-  }
+    const date = task.getDueDate();
+    selectDateButton.textContent = `${
+      date.getMonth() + 1
+    }/${date.getDate()}/${date.getFullYear()}`;
 
-  function handleAddButton() {
-    const title = taskDialog.querySelector(".form-title").value;
-    const description = taskDialog.querySelector("#form-description").value;
-    const completedStatus = false;
+    selectPriorityButton.textContent = task.getPriority();
+  };
 
+  const handleSubmit = () => {
     if (
-      title.trim() === "" ||
-      title.length > 45 ||
+      formTitle.value.trim() === "" ||
+      formTitle.value.length > 45 ||
       selectDateButton.textContent === "Select date" ||
       selectPriorityButton.textContent === "Select priority"
     ) {
@@ -83,76 +132,95 @@ function handleCreateTask(sidebar) {
     const dueDate = new Date(selectDateButton.textContent);
     const priority = selectPriorityButton.textContent;
 
-    const sidebar = document.querySelector(".sidebar");
-    const activePage = sidebar
-      .querySelector(".active")
-      .querySelector("span").textContent;
-
-    const project = projectList.getProject(activePage);
-    const taskExists = project.getTasks().some((task) => {
-      return (
-        task.getTitle() === title &&
-        task.getDescription() === description &&
-        task.getDueDate().getTime() === dueDate.getTime() &&
-        task.getPriority() === priority
-      );
-    });
-    if (taskExists) {
+    if (taskExists(formTitle, formDescription, dueDate.getTime(), priority)) {
       taskDialog.querySelector(".form-submit span").textContent =
         "Cannot create duplicate tasks.";
       return;
     }
-
-    project.addTask(
-      new Task(title, description, dueDate, priority, completedStatus)
-    );
-
-    function resetForm() {
-      taskDialog.querySelector("form").reset();
-      selectDateButton.textContent = "Select date";
-      selectPriorityButton.textContent = "Select priority";
-      renderCalendar(new Date().getFullYear(), new Date().getMonth());
-      taskDialog.querySelector(".form-submit span").textContent = "";
-      taskDialog.close();
-      detachDialogListeners();
+    // todo: handle completed status and delete once again
+    if (option === "Create") {
+      const project = getActiveProject(sidebar);
+      project.addTask(
+        new Task(
+          formTitle.value,
+          formDescription.value,
+          dueDate,
+          priority,
+          false
+        )
+      );
+    } else {
+      const taskItem = target.closest(".task-item");
+      const task = findTaskInProjects(taskItem.id);
+      task.setTitle(formTitle.value);
+      task.setDescription(formDescription.value);
+      task.setDueDate(dueDate);
+      task.setPriority(priority);
     }
-    renderPage(activePage, true);
     resetForm();
-  }
+    renderPage(getActivePage(sidebar), isProjectPage(getActivePage(sidebar)));
+  };
 
-  function attachDialogListeners() {
+  const handleSelectDate = () => {
+    calendar.classList.toggle("hide");
+  };
+
+  const handleSelectPriority = () => {
+    dropdownList.classList.toggle("hide");
+  };
+
+  const handleCalendar = (event) => {
+    if (event.target.matches(".date")) {
+      calendar.classList.toggle("hide");
+      selectDateButton.textContent = event.target.id;
+    }
+  };
+
+  const handleDropdownList = (event) => {
+    if (event.target.matches(".dropdown-option")) {
+      selectPriorityButton.textContent = event.target.textContent;
+      dropdownList.classList.toggle("hide");
+    }
+  };
+
+  const attachListeners = () => {
     selectDateButton.addEventListener("click", handleSelectDate);
     selectPriorityButton.addEventListener("click", handleSelectPriority);
     calendar.addEventListener("click", handleCalendar);
     dropdownList.addEventListener("click", handleDropdownList);
-    addButton.addEventListener("click", handleAddButton);
-  }
+    submitButton.addEventListener("click", handleSubmit);
+  };
 
-  function detachDialogListeners() {
+  const detachListeners = () => {
     selectDateButton.removeEventListener("click", handleSelectDate);
     selectPriorityButton.removeEventListener("click", handleSelectPriority);
     calendar.removeEventListener("click", handleCalendar);
     dropdownList.removeEventListener("click", handleDropdownList);
-    addButton.removeEventListener("click", handleAddButton);
-  }
+    submitButton.removeEventListener("click", handleSubmit);
+  };
 
+  // handle form escapes
   cancelButton.addEventListener(
     "click",
     () => {
+      if (option === "Update") resetForm();
       taskDialog.close();
-      detachDialogListeners();
+      detachListeners();
     },
     { once: true }
   );
-
   document.addEventListener(
     "keypress",
     (event) => {
-      if (event.key === "Escape") detachDialogListeners();
+      if (event.key === "Escape") {
+        detachDialogListeners();
+        if (option === "Update") resetForm();
+      }
     },
     { once: true }
   );
 
+  // collapse when clicking away
   taskDialog.addEventListener("click", (event) => {
     if (
       !calendar.classList.contains("hide") &&
@@ -169,8 +237,11 @@ function handleCreateTask(sidebar) {
       dropdownList.classList.toggle("hide");
     }
   });
+
+  // resetForm();
+  populateForm();
+  attachListeners();
   taskDialog.showModal();
-  attachDialogListeners();
 }
 
 function handleCreateProject(sidebar) {
@@ -223,15 +294,36 @@ function handleCreateProject(sidebar) {
   projectDialog.showModal();
 }
 
-// todo:
-// completing task, editing task, deleting task, viewing task
-function handleTaskUpdates(sidebar) {
-  handleScreenChange(sidebar); // close sidebar if task item clicked
+function handleTaskUpdates(target, sidebar) {
+  const taskItem = target.closest(".task-item");
+  if (target.matches(".task-checkbox")) {
+    target.classList.toggle("complete");
+    setTimeout(() => {
+      const task = findTaskInProjects(taskItem.id);
+      task.setCompletedStatus(target.classList.contains("complete"));
+      renderPage(getActivePage(sidebar), isProjectPage(getActivePage(sidebar)));
+    }, 500);
+    return true;
+  } else if (target.closest(".delete")) {
+    const projects = projectList.getProjectList();
+    for (const project of projects) {
+      const task = project.getTask(taskItem.id);
+      if (task) {
+        project.removeTask(task);
+        renderPage(
+          getActivePage(sidebar),
+          isProjectPage(getActivePage(sidebar))
+        );
+        return true;
+      }
+    }
+  }
+  return false;
 }
 
-function setActivePage(event, sidebar) {
-  const sidebarItem = event.target.closest(".sidebar-item");
-  if (event.target.closest(".sidebar-item--header")) return;
+function setActivePage(target, sidebar) {
+  const sidebarItem = target.closest(".sidebar-item");
+  if (target.closest(".sidebar-item--header")) return;
 
   const linkText = sidebarItem
     .querySelector(".sidebar-link span")
@@ -241,7 +333,7 @@ function setActivePage(event, sidebar) {
   activePage.classList.remove("active");
   sidebarItem.classList.add("active");
 
-  const isProject = event.target.closest(".sidebar-item.project-item");
+  const isProject = target.closest(".sidebar-item.project-item");
   renderPage(linkText, isProject);
 }
 
@@ -255,10 +347,12 @@ function displayWebsite() {
     const target = event.target;
 
     if (target.closest(".sidebar-toggle")) toggleSidebar(sidebar);
-    else if (target.closest(".view-add-tasks")) handleCreateTask(sidebar);
+    else if (target.closest(".view-add-tasks"))
+      openTaskForm(target, sidebar, "Create");
     else if (target.closest("#add-project")) handleCreateProject(sidebar);
-    else if (target.closest(".task-item")) handleTaskUpdates(sidebar);
-    else if (target.closest(".sidebar-item")) setActivePage(event, sidebar);
+    else if (target.closest(".task-item"))
+      openTaskForm(target, sidebar, "Update");
+    else if (target.closest(".sidebar-item")) setActivePage(target, sidebar);
     else if (!target.closest(".sidebar") && sidebar.classList.contains("open"))
       sidebar.classList.remove("open");
   });
