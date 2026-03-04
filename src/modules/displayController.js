@@ -137,7 +137,6 @@ function openTaskForm(target, sidebar, option) {
         "Cannot create duplicate tasks.";
       return;
     }
-    // todo: handle completed status and delete once again
     if (option === "Create") {
       const project = getActiveProject(sidebar);
       project.addTask(
