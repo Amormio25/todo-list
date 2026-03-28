@@ -9,6 +9,7 @@ Try it out here! -> https://amormio25.github.io/todo-list/
 ## Features
 
 - **Task Management**: Add, update, and delete tasks with ease.
+- **Persistent State**: Persistent state kept for users via localStorage.
 - **Project Organization**: Group tasks into projects for better organization.
 - **Dynamic Interface**: Real-time updates to the task list and project view.
 - **Responsive Design**: Fully functional across devices of all screen sizes.
